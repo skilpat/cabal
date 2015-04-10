@@ -135,6 +135,8 @@ import Control.Monad
     ( join, when, unless, filterM )
 import Control.Concurrent.MVar
     ( newEmptyMVar, putMVar, takeMVar )
+import Data.Maybe
+  ( catMaybes )
 import Data.List
   ( nub, unfoldr, isPrefixOf, tails, intercalate )
 import Data.Char as Char
