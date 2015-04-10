@@ -996,6 +996,9 @@ installLib verbosity lbi targetDir dynlibTargetDir builtDir _pkg lib clbi = do
   whenProf    $ copyModuleFiles "p_hi"
   whenShared  $ copyModuleFiles "dyn_hi"
 
+  -- copy any .hi-boot files over:
+  whenVanilla $ copyOptionalModuleFiles "hi-boot"
+
   -- copy the built library files over:
   whenVanilla $ mapM_ (installOrdinary builtDir targetDir)       vanillaLibNames
   whenProf    $ mapM_ (installOrdinary builtDir targetDir)       profileLibNames
@@ -1018,6 +1021,9 @@ installLib verbosity lbi targetDir dynlibTargetDir builtDir _pkg lib clbi = do
 
     copyModuleFiles ext =
       findModuleFiles [builtDir] [ext] (libModules lib)
+      >>= installOrdinaryFiles verbosity targetDir
+    copyOptionalModuleFiles ext = do
+      findOptionalModuleFiles [builtDir] [ext] (libModules lib)
       >>= installOrdinaryFiles verbosity targetDir
 
     cid = compilerId (compiler lbi)

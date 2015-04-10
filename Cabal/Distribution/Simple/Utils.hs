@@ -72,6 +72,8 @@ module Distribution.Simple.Utils (
         findFileWithExtension',
         findModuleFile,
         findModuleFiles,
+        findOptionalModuleFile,
+        findOptionalModuleFiles,
         getDirectoryContentsRecursive,
 
         -- * environment variables
@@ -133,6 +135,8 @@ import Control.Monad
     ( join, when, unless, filterM )
 import Control.Concurrent.MVar
     ( newEmptyMVar, putMVar, takeMVar )
+import Data.Maybe
+  ( catMaybes )
 import Data.List
   ( nub, unfoldr, isPrefixOf, tails, intercalate )
 import Data.Char as Char
@@ -659,6 +663,31 @@ findModuleFile searchPath extensions moduleName =
     notFound = die $ "Error: Could not find module: " ++ display moduleName
                   ++ " with any suffix: " ++ show extensions
                   ++ " in the search path: " ++ show searchPath
+
+-- | Finds optional files corresponding to a list of Haskell module names.
+--
+-- As 'findOptionalModuleFile' but for a list of module names.
+--
+findOptionalModuleFiles :: [FilePath]   -- ^ build prefix (location of objects)
+                -> [String]     -- ^ search suffixes
+                -> [ModuleName] -- ^ modules
+                -> IO [(FilePath, FilePath)]
+findOptionalModuleFiles searchPath extensions moduleNames =
+      return . catMaybes
+  =<< mapM (findOptionalModuleFile searchPath extensions) moduleNames
+
+-- | Find an optional file corresponding to a Haskell module name.
+--
+-- This is similar to 'findModuleFile' but returns an optional pair in the case
+-- that the file is not found, rather than failing.
+--
+findOptionalModuleFile :: [FilePath]  -- ^ build prefix (location of objects)
+                       -> [String]    -- ^ search suffixes
+                       -> ModuleName  -- ^ module
+                       -> IO (Maybe (FilePath, FilePath))
+findOptionalModuleFile searchPath extensions moduleName =
+  findFileWithExtension' extensions searchPath
+                         (ModuleName.toFilePath moduleName)
 
 -- | List all the files in a directory and all subdirectories.
 --
