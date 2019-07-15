@@ -1,4 +1,4 @@
-# Backpack "Class Struggle" .hi-boot hack
+# Backpack "Class Struggle" `.hi-boot` hack
 
 This is a fork of `cabal-install` that will additionally copy over
 any `.hi-boot` files resulting from the building of any packages 
@@ -16,7 +16,7 @@ here's the gist:
 source code in `Cabal`:
 
     ```
-    cd cabal/cabal-install
+    cd cabal-hi-boot/cabal-install
     cabal sandbox init
     cabal add-source ../Cabal
     ```
@@ -54,7 +54,7 @@ file:
 from your clone:
 
     ```
-    cd cabal/Cabal
+    cd cabal-hi-boot/Cabal
     ghc --make -threaded Setup.hs
     ```
 
