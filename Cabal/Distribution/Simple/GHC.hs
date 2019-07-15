@@ -997,6 +997,8 @@ installLib verbosity lbi targetDir dynlibTargetDir builtDir _pkg lib clbi = do
   whenShared  $ copyModuleFiles "dyn_hi"
 
   -- copy any .hi-boot files over:
+  info verbosity $ "*** BACKPACK \"CLASS STRUGGLE\" PATCH FOR .hi-boot FILES ENABLED (2/2) ***"
+  info verbosity $ "*** If there are any .hi-boot files to install, it will be done! ***"
   whenVanilla $ copyOptionalModuleFiles "hi-boot"
 
   -- copy the built library files over:

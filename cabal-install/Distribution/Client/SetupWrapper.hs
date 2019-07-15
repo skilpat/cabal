@@ -251,6 +251,8 @@ externalSetupMethod verbosity options pkg bt mkargs = do
   debug verbosity $ "Using external setup method with build-type " ++ show bt
   createDirectoryIfMissingVerbose verbosity True setupDir
   (cabalLibVersion, mCabalLibInstalledPkgId, options') <- cabalLibVersionToUse
+  info verbosity $ "*** BACKPACK \"CLASS STRUGGLE\" PATCH FOR .hi-boot FILES ENABLED (1/2) ***"
+  info verbosity $ "*** You should see an analogous message with (2/2) in each package build log. ***"
   debug verbosity $ "Using Cabal library version " ++ display cabalLibVersion
   path <- if useCachedSetupExecutable
           then getCachedSetupExecutable options'
@@ -549,7 +551,6 @@ externalSetupMethod verbosity options pkg bt mkargs = do
         searchpath <- programSearchPathAsPATHVar
                       (getProgramSearchPath (useProgramConfig options'))
         env        <- getEffectiveEnvironment [("PATH", Just searchpath)]
-
         process <- runProcess path' args
                    (useWorkingDir options') env Nothing
                    (useLoggingHandle options') (useLoggingHandle options')
